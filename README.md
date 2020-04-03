@@ -18,7 +18,7 @@ You need to change the path in the following codes in main.py. The variable name
 svs_fol = '/data01/shared/hanle/svs_tcga_paad'
 cancer_fol = '/data04/shared/hanle/paad_prediction/data/heatmap_txt_190_tcga'
 til_fol = '/data04/shared/shahira/TIL_heatmaps/PAAD/vgg_mix_binary/heatmap_txt'
-output_pred = '4panel_pngs_2classes'
+output_pred = '4panel_pngs'
 
 prefix = "prediction-"
 wsi_extension = ".svs"
