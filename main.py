@@ -13,6 +13,7 @@ output_pred = '4panel_pngs'
 prefix = "prediction-"
 wsi_extension = ".svs"
 skip_first_line_pred = True
+is_cancer_wsiID_same_til_wsiID = True
 
 fns = [fn.split('prediction-')[-1] for fn in os.listdir(til_fol) if fn.startswith('prediction-') and not fn.endswith('low_res')]
 til_wsiID_map = collections.defaultdict(str)
@@ -21,8 +22,10 @@ for fn in fns:
 
 
 def checkFileExisting(wsiId):
-    # til_wsiID = til_wsiID_map[wsiId]  # if cancer id is different from til slide id
     til_wsiID = wsiId
+    if not is_cancer_wsiID_same_til_wsiID:
+        til_wsiID = til_wsiID_map[wsiId]  # if cancer id is different from til slide id
+
     allPath = [
         os.path.join(staged_pred, 'color-' + wsiId), # colorPath
         os.path.join(svs_fol, wsiId + wsi_extension), # svsPath
@@ -45,9 +48,10 @@ def gen1Image(fn):
         return
 
     oslide = openslide.OpenSlide(os.path.join(svs_fol, wsiId + wsi_extension))
-
-    # til_wsi = til_wsiID_map[wsiId]     # if cancer id is different from til slide id
     til_wsiID = wsiId
+    if not is_cancer_wsiID_same_til_wsiID:
+        til_wsiID = til_wsiID_map[wsiId]     # if cancer id is different from til slide id
+
     til_heatmap = HeatMap(til_fol, skip_first_line_pred=False)
     til_heatmap.setWidthHeightByOSlide(oslide)
     til_map = til_heatmap.getHeatMapByID(til_wsiID)
