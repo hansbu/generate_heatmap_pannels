@@ -10,7 +10,9 @@ There are different branch for different tumor type.
 
 The run instructions are the same for all branches.
 
-Usage: python main.py N
+## Usage
+python main.py N
+
 where N can be -1, 0, 1, or any positive integer.
 - 0/1: not using parallel processing
 - any number larger than 1, using N cores in parallel processing, limited to the available cores in the system.
