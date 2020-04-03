@@ -1,6 +1,6 @@
 # generate_heatmap_pannels
 
-This git repo is to generate 4-image panel as the one in example.png.
+This git repo is to generate 4-image panel as the one in example.png at the bottom.
 
 There are different branches for different tumor types.
 
@@ -17,3 +17,7 @@ where N can be -1, 0, 1, or any positive integer.
 - 0/1: not using parallel processing
 - any number larger than 1, using N cores in parallel processing, limited to the available cores in the system.
 - -1: use all available cores in parallel processing, left 2 cores for others
+
+
+![4-image panel example for Breast Cancer](https://github.com/hansbu/generate_heatmap_pannels/blob/master/example.png)
+
