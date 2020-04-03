@@ -4,14 +4,15 @@ from FourPanelImage import FourPanelImage
 from HeatMap import HeatMap
 
 # these folders will be replaced by paramaters
-svs_fol = '/data01/shared/hanle/svs_tcga_seer_brca'
-cancer_fol = '/data01/shared/hanle/tumor_project/pub_tumor_cancer_brca/Cancer_heatmap_tcga_seer_v1'
-til_fol = '/data04/shared/shahira/TIL_heatmaps/BRCA/vgg_mix_prob/heatmap_txt'
+svs_fol = '/data01/shared/hanle/svs_tcga_paad'
+cancer_fol = '/data04/shared/hanle/paad_prediction/data/heatmap_txt_190_tcga'
+til_fol = '/data04/shared/shahira/TIL_heatmaps/PAAD/vgg_mix_binary/heatmap_txt'
 output_pred = '4panel_pngs_2classes'
 
 prefix = "prediction-"
 wsi_extension = ".svs"
 skip_first_line_pred = True
+is_cancer_wsiID_same_til_wsiID = True
 
 fns = [fn.split('prediction-')[-1] for fn in os.listdir(til_fol) if fn.startswith('prediction-') and not fn.endswith('low_res')]
 til_wsiID_map = collections.defaultdict(str)
@@ -20,8 +21,10 @@ for fn in fns:
 
 
 def checkFileExisting(wsiId):
-    til_wsiID = til_wsiID_map[wsiId]  # if cancer id is different from til slide id
-    # til_wsiID = wsiId
+    til_wsiID = wsiId
+    if not is_cancer_wsiID_same_til_wsiID:
+        til_wsiID = til_wsiID_map[wsiId]  # if cancer id is different from til slide id
+
     allPath = [
         os.path.join(cancer_fol, 'color-' + wsiId), # colorPath
         os.path.join(svs_fol, wsiId + wsi_extension), # svsPath
@@ -44,9 +47,10 @@ def gen1Image(fn):
         return
 
     oslide = openslide.OpenSlide(os.path.join(svs_fol, wsiId + wsi_extension))
+    til_wsiID = wsiId
+    if not is_cancer_wsiID_same_til_wsiID:
+        til_wsiID = til_wsiID_map[wsiId]     # if cancer id is different from til slide id
 
-    til_wsiID = til_wsiID_map[wsiId]     # if cancer id is different from til slide id
-    # til_wsiID = wsiId
     til_heatmap = HeatMap(til_fol, skip_first_line_pred=False)
     til_heatmap.setWidthHeightByOSlide(oslide)
     til_map = til_heatmap.getHeatMapByID(til_wsiID)
