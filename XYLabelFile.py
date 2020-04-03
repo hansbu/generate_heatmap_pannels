@@ -37,7 +37,8 @@ class XYLabelFile(object):
             list: self.extracted. List of extracted 2D arrays.
         """
         uniqueX = np.unique(self.data[:, 0])
-        self.patchSize = uniqueX[1] - uniqueX[0]
+        uniqueX.sort()
+        self.patchSize = uniqueX[5] - uniqueX[4]
 #         print("max x,y:", np.max(self.data[:, [0,1]], axis=0))
 #         print(self.patchSize)
         rowIndex = np.logical_and(self.data[:,0] + self.patchSize / 2 < self.width,
