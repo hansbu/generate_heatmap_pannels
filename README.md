@@ -11,7 +11,7 @@ There are different branches for different tumor types.
 The run instructions are the same for all branches.
 
 ## Setup Parameters
-You need to change the path in the following codes. The variable names are self-explanatory 
+You need to change the path in the following codes in main.py. The variable names are self-explanatory 
 
 ```python
 # these folders will be replaced by paramaters
