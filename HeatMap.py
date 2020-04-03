@@ -42,7 +42,7 @@ class HeatMap(object):
         whiteness, blackness, redness = colorFile.get_whiteness_im()
 
         image = np.zeros((pred.shape[0], pred.shape[1], 3), dtype=np.uint8)
-        #print('Processing: {}\n; image: {}; whiteness: {}, blackness: {}, redness: {}'.format(predPath, image.shape, whiteness.shape, blackness.shape, redness.shape))
+
         image[:, :, 0] = np.multiply(255* pred, (blackness>30).astype(np.float64), (redness<0.15).astype(np.float64))
         image[:, :, 1] = necr
         image[:, :, 2] = 255 * (cv2.GaussianBlur(whiteness, (5, 5), 0) > 12)

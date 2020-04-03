@@ -37,22 +37,19 @@ class XYLabelFile(object):
             list: self.extracted. List of extracted 2D arrays.
         """
         uniqueX = np.unique(self.data[:, 0])
-        uniqueX.sort()
-        self.patchSize = uniqueX[5] - uniqueX[4]
-        #print('\nfile: ', self.filePath)
-        #print('uniqueX: ', uniqueX[:5])
-        #print("max x,y:", np.max(self.data[:, [0,1]], axis=0))
-        #print('patch size : ', self.patchSize)
+        self.patchSize = uniqueX[1] - uniqueX[0]
+#         print("max x,y:", np.max(self.data[:, [0,1]], axis=0))
+#         print(self.patchSize)
         rowIndex = np.logical_and(self.data[:,0] + self.patchSize / 2 < self.width,
                                   self.data[:,1] + self.patchSize / 2 < self.height)
         filteredData = self.data[rowIndex, :]
 
         xys_pred = ((filteredData[:, [0, 1]] + self.patchSize / 2) / self.patchSize - 1).astype(np.int)
-        #print("oslide width & height:", self.width, self.height)
-        #print("filteredData.shape", filteredData.shape)
-        #print("data.shape:", self.data.shape)
-        #print("index min x,y:", np.min(xys_pred, axis=0))
-        #print("index max x,y:", np.max(xys_pred, axis=0))
+#         print("oslide width & height:", self.width, self.height)
+#         print("filteredData.shape", filteredData.shape)
+#         print("data.shape:", self.data.shape)
+#         print("index min x,y:", np.min(xys_pred, axis=0))
+#         print("index max x,y:", np.max(xys_pred, axis=0))
         self.extracted = []
         shape = int(self.width // self.patchSize), int(self.height // self.patchSize)
 #         print("small shape:", shape)

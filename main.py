@@ -1,13 +1,14 @@
 import collections
 from utils import *
-from FourPanelImage import FourPanelImage
+from FourPanelGleasonImage import FourPanelGleasonImage
 from HeatMap import HeatMap
+from StagedTumorHeatMap import StagedTumorHeatMap
 
 # these folders will be replaced by paramaters
-svs_fol = '/data01/shared/hanle/svs_tcga_seer_brca'
-cancer_fol = '/data01/shared/hanle/tumor_project/pub_tumor_cancer_brca/Cancer_heatmap_tcga_seer_v1'
-til_fol = '/data04/shared/shahira/TIL_heatmaps/BRCA/vgg_mix_prob/heatmap_txt'
-output_pred = '4panel_pngs_2classes'
+svs_fol = '/data01/tcga_data/tumor/luad'
+staged_pred = '/data04/shared/hanle/quip_lung_cancer_detection_LUAD_TCGA/data/heatmap_txt_6classes_with_headers'
+til_fol = '/data04/shared/shahira/TIL_heatmaps/LUAD/vgg_mix_binary/heatmap_txt'
+output_pred = '4panel_pngs'
 
 prefix = "prediction-"
 wsi_extension = ".svs"
@@ -20,12 +21,12 @@ for fn in fns:
 
 
 def checkFileExisting(wsiId):
-    til_wsiID = til_wsiID_map[wsiId]  # if cancer id is different from til slide id
-    # til_wsiID = wsiId
+    #til_wsiID = til_wsiID_map[wsiId]  # if cancer id is different from til slide id
+    til_wsiID = wsiId
     allPath = [
-        os.path.join(cancer_fol, 'color-' + wsiId), # colorPath
+        os.path.join(staged_pred, 'color-' + wsiId), # colorPath
         os.path.join(svs_fol, wsiId + wsi_extension), # svsPath
-        os.path.join(cancer_fol, prefix + wsiId), # predPath
+        os.path.join(staged_pred, prefix + wsiId), # predPath
         os.path.join(til_fol, 'prediction-' + til_wsiID), # tilPath_pred
         os.path.join(til_fol, 'color-' + til_wsiID), # tilPath_color
     ]
@@ -45,17 +46,20 @@ def gen1Image(fn):
 
     oslide = openslide.OpenSlide(os.path.join(svs_fol, wsiId + wsi_extension))
 
-    til_wsiID = til_wsiID_map[wsiId]     # if cancer id is different from til slide id
-    # til_wsiID = wsiId
+    #til_wsiID = til_wsiID_map[wsiId]     # if cancer id is different from til slide id
+    til_wsiID = wsiId
     til_heatmap = HeatMap(til_fol, skip_first_line_pred=False)
     til_heatmap.setWidthHeightByOSlide(oslide)
     til_map = til_heatmap.getHeatMapByID(til_wsiID)
 
-    cancer_heatmap = HeatMap(cancer_fol, skip_first_line_pred=False)
-    cancer_heatmap.setWidthHeightByOSlide(oslide)
-    cancer_map = cancer_heatmap.getHeatMapByID(wsiId)
+    stagedCancerFile = StagedTumorHeatMap(staged_pred, skip_first_line_pred)
+    stagedCancerFile.setWidthHeightByOSlide(oslide)
+    stagedCancerMap = stagedCancerFile.getHeatMapByID(wsiId)
+    classificationMap = stagedCancerFile.getStageClassificationTilMap(tilMap=til_map)
+    # classificationMap = stagedCancerFile.getStageClassificationMap()    # no til file
+    stageClassificationMap = stagedCancerFile.getStageClassificationMap()
 
-    img = FourPanelImage(oslide, cancer_map, til_map,
+    img = FourPanelGleasonImage(oslide, stagedCancerMap, classificationMap, stageClassificationMap,
                        os.path.join(output_pred, wsiId+".png"))
     img.saveImg()
     print(wsiId)
@@ -100,7 +104,6 @@ if __name__ == "__main__":
     print("***********************************************\n")
 
     main(parallel_processing = parallel_processing)
-
 
 
 

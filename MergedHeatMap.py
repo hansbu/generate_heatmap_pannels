@@ -10,7 +10,7 @@ class MergedHeatMap(object):
     def __init__(self, cancerImg, lympImg):
         self.cancerImg = cancerImg
         self.lympImg = lympImg
-        self.mergedHeatMap = self.merge()
+        self.mergedHeatMap = self.merge(cancerImg, lympImg)
 
     def thresholding(self, array):
         threshold = 255 * 0.5
@@ -18,8 +18,7 @@ class MergedHeatMap(object):
         out[array > threshold] = 255
         return out
 
-    def merge(self):
-        cancerImg, lympImg = self.cancerImg, self.lympImg
+    def merge(self, cancerImg, lympImg):
         cancerArray = self.thresholding(cancerImg[:, :, 2])
 
         up = int(math.ceil(lympImg.shape[0]/cancerArray.shape[0]))
