@@ -2,9 +2,9 @@
 
 This git repo is to generate 4-image panel as the one in example.png.
 
-There are different branch for different tumor type.
+There are different branches for different tumor types.
 
-- 2_classes: for tumor type with binary classification, e.g, BRCA, PAAD
+- 2_classes: for tumor types with binary classification, e.g, BRCA, PAAD
 - 3_classes_prad: for 3-way classification, especially for PRAD.
 - 6_classes_luad: for 6-way classification, especially for LUAD.
 
