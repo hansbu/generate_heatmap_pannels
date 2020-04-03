@@ -10,6 +10,21 @@ There are different branches for different tumor types.
 
 The run instructions are the same for all branches.
 
+## Setup Parameters
+You need to change the path in the following codes. The variable names are self-explanatory 
+
+```python
+# these folders will be replaced by paramaters
+svs_fol = '/data01/shared/hanle/svs_tcga_paad'
+cancer_fol = '/data04/shared/hanle/paad_prediction/data/heatmap_txt_190_tcga'
+til_fol = '/data04/shared/shahira/TIL_heatmaps/PAAD/vgg_mix_binary/heatmap_txt'
+output_pred = '4panel_pngs_2classes'
+
+prefix = "prediction-"
+wsi_extension = ".svs"
+```
+
+
 ## Usage
 python main.py N
 
