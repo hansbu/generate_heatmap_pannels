@@ -5,9 +5,9 @@ from HeatMap import HeatMap
 from StagedTumorHeatMap import StagedTumorHeatMap
 
 # these folders will be replaced by paramaters
-svs_fol = '/data01/tcga_data/tumor/luad'
-staged_pred = '/data04/shared/hanle/quip_lung_cancer_detection_LUAD_TCGA/data/heatmap_txt_6classes_with_headers'
-til_fol = '/data04/shared/shahira/TIL_heatmaps/LUAD/vgg_mix_binary/heatmap_txt'
+svs_fol = '/data02/shared/hanle/svs_tcga_prad/'
+staged_pred = '/data04/shared/hanle/quip_prad_cancer_detection_TCGA/data/heatmap_txt_3classes_with_headers'
+til_fol = '/data04/shared/shahira/TIL_heatmaps/PRAD/vgg_mix_binary/heatmap_txt'
 output_pred = '4panel_pngs'
 
 prefix = "prediction-"
@@ -21,7 +21,7 @@ for fn in fns:
 
 
 def checkFileExisting(wsiId):
-    #til_wsiID = til_wsiID_map[wsiId]  # if cancer id is different from til slide id
+    # til_wsiID = til_wsiID_map[wsiId]  # if cancer id is different from til slide id
     til_wsiID = wsiId
     allPath = [
         os.path.join(staged_pred, 'color-' + wsiId), # colorPath
@@ -46,7 +46,7 @@ def gen1Image(fn):
 
     oslide = openslide.OpenSlide(os.path.join(svs_fol, wsiId + wsi_extension))
 
-    #til_wsiID = til_wsiID_map[wsiId]     # if cancer id is different from til slide id
+    # til_wsi = til_wsiID_map[wsiId]     # if cancer id is different from til slide id
     til_wsiID = wsiId
     til_heatmap = HeatMap(til_fol, skip_first_line_pred=False)
     til_heatmap.setWidthHeightByOSlide(oslide)
@@ -56,7 +56,6 @@ def gen1Image(fn):
     stagedCancerFile.setWidthHeightByOSlide(oslide)
     stagedCancerMap = stagedCancerFile.getHeatMapByID(wsiId)
     classificationMap = stagedCancerFile.getStageClassificationTilMap(tilMap=til_map)
-    # classificationMap = stagedCancerFile.getStageClassificationMap()    # no til file
     stageClassificationMap = stagedCancerFile.getStageClassificationMap()
 
     img = FourPanelGleasonImage(oslide, stagedCancerMap, classificationMap, stageClassificationMap,
@@ -104,6 +103,7 @@ if __name__ == "__main__":
     print("***********************************************\n")
 
     main(parallel_processing = parallel_processing)
+
 
 
 

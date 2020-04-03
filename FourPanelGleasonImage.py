@@ -24,7 +24,8 @@ class FourPanelGleasonImage(object):
 
         width = 6.4 * 1
         mpl.rcParams["figure.figsize"] = [width * 1.10, width * aspect]
-        mpl.rcParams["figure.dpi"] = 300
+        mpl.rcParams["figure.dpi"] = 600
+        #         print(aspect)
 
         if aspect > 1:
             hspace = 0.04
@@ -59,8 +60,8 @@ class FourPanelGleasonImage(object):
 
 
         axarr[1, 0].imshow(mergedMap)
-        colors_merge = ['red', 'blue', 'orange', 'yellow', 'green', 'violet']  # #00FF00 for pure green
-        labels_merge = ['Lepidic', 'Benign', 'Acinar', 'Micropap', 'Mucinous', 'Solid']
+        colors_merge = ['#00FF00', 'orange', 'blue']  # #00FF00 for pure green
+        labels_merge = ['G3', 'G4+5', 'Benign']
         legend_patches_merge = [Rectangle((0, 0), width=0.01, height=0.01, color=icolor, label=label, lw=0)
                                 for icolor, label in zip(colors_merge, labels_merge)]
         caxarr[1, 0].legend(handles=legend_patches_merge,

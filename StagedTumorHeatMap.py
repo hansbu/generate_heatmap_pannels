@@ -38,14 +38,16 @@ class StagedTumorHeatMap(HeatMap):
     def getTumorClassificationMap(self):
         predictionFile = self.predictionFile
         stackedArray = np.stack([predictionFile.pred,
-                                 predictionFile.benign_adjusted],
+                                 predictionFile.benign_adjusted],  # stroma
                                 axis=2)
+        #         print("stackedArray.shape",stackedArray.shape)
         classification = np.argmax(stackedArray, axis=2)
         mask = np.sum(stackedArray, axis=2) > 0.1
 
         colorArray = np.array([  # rgb array
             [255, 255, 0],  # tumor yellow
-            [0, 0, 255]  # benign blue
+            [0, 0, 255],  # benign blue
+            [192, 192, 192]  # stroma gray # not used
         ])
         self.tumorColorArray = colorArray
 
@@ -63,24 +65,18 @@ class StagedTumorHeatMap(HeatMap):
 
     def getStageClassificationMap(self):
         predictionFile = self.predictionFile
-        stackedArray = np.stack([predictionFile.lepidic,
-                                 predictionFile.benign,
-                                 predictionFile.acinar,
-                                 predictionFile.micropap,
-                                 predictionFile.mucinous,
-                                 predictionFile.solid],  # stroma
+        stackedArray = np.stack([predictionFile.g3, predictionFile.g45,
+                                 predictionFile.benign],  # stroma
                                 axis=2)
-
+        #         print("stackedArray.shape",stackedArray.shape)
         classification = np.argmax(stackedArray, axis=2)
-        mask = np.sum(stackedArray, axis=2) > 0.05
+        mask = np.sum(stackedArray, axis=2) > 0.1
 
         colorArray = np.array([  # rgb array
-            [255, 0, 0],  # red
+            [0, 255, 0],  # g3 green
+            [255, 165, 0],  # g45 orange
             [0, 0, 255],  # benign blue
-            [255, 127, 0],# orange
-            [255, 255, 0],# yellow
-            [0, 255, 0],  # green
-            [139, 0, 255] # violet
+            [192, 192, 192]  # stroma gray # not used
         ])
         self.stageColorArray = colorArray
 

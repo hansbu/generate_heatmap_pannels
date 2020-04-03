@@ -5,21 +5,18 @@ import pdb
 class StagePredictionFile(XYLabelFile):
     def __init__(self, file_path, skip_header=False):
         super().__init__(file_path, skip_header)
-        self.lepidic = None
+        self.g3 = None
+        self.g45 = None
         self.benign = None
-        self.acinar = None
-        self.micropap = None
-        self.mucinous = None
-        self.solid = None
+        self.stroma = None
         self.pred = None
         self.benign_adjusted = None
 
     def get_stage_prediction(self):
-        indexes = [2, 3, 4, 5, 6, 7]
-        self.lepidic, self.benign, self.acinar, self.micropap, self.mucinous, self.solid = self.extract(indexes)
-        sum_prob = self.lepidic + self.benign + self.acinar + self.micropap + self.mucinous + self.solid
-        self.benign_adjusted, self.pred = self.get_benign_tumor_adjusted(self.benign, sum_prob, len(indexes))
-        return self.lepidic, self.benign, self.acinar, self.micropap, self.mucinous, self.solid
+        indexes = [2, 3, 4]
+        self.g3, self.g45, self.benign = self.extract(indexes)
+        self.benign_adjusted, self.pred = self.get_benign_tumor_adjusted(self.benign, self.g3+self.g45+self.benign, len(indexes))
+        return self.g3, self.g45, self.benign
 
     def get_benign_tumor_adjusted(self, benign, sum_probabilities, num_classes):
         # benign, sum_probabilities is a matrix w x h
