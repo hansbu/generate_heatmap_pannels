@@ -23,6 +23,8 @@ output_pred = '4panel_pngs'
 prefix = "prediction-"
 wsi_extension = ".svs"
 ```
+NOTE: please make sure that the filename of prediction-xxx and color-xxx files of the same WSIs in cancer_fol and til_fol the SAME.
+For example, if the WSI is TCGA-TD-XL01-01-DX1, then there is one "prediction-TCGA-TD-XL01-01-DX1" and one "color-TCGA-TD-XL01-01-DX1" file in cancer_fol and one "prediction-TCGA-TD-XL01-01-DX1", one "color-TCGA-TD-XL01-01-DX1" files in til_fol
 
 
 ## Usage
